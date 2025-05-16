@@ -11,7 +11,7 @@ import {
 } from "instagram-graph-api";
 import { fileURLToPath } from "url";
 import { writeFile } from "fs/promises";
-import champions from "./champions.json" assert { type: "json" };
+import champions from './champions.json' with { type: "json" };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
