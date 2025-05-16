@@ -2,8 +2,8 @@ name: Daily League Lore Video
 
 on:
   schedule:
-    - cron: "0 8 * * *" # Her gün sabah 8'de (UTC)
-  workflow_dispatch: # Elle de tetikleyebilirsin
+    - cron: "0 8 * * *" 
+  workflow_dispatch: 
 
 jobs:
   build:
@@ -26,10 +26,11 @@ jobs:
       - name: Create .env file
         run: |
           echo "ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}" >> .env
+          echo "DISCORD_WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}" >> .env
           echo "IG_ACCESS_TOKEN=${{ secrets.IG_ACCESS_TOKEN }}" >> .env
           echo "IG_PAGE_ID=${{ secrets.IG_PAGE_ID }}" >> .env
           echo "IG_USER_ID=${{ secrets.IG_USER_ID }}" >> .env
           echo "PUBLIC_VIDEO_URL=${{ secrets.PUBLIC_VIDEO_URL }}" >> .env
 
       - name: Run script
-        run: node index.js
+        run: npm run start
