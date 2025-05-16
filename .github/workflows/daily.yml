@@ -1,0 +1,32 @@
+name: Daily League Lore Video
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # Her gün sabah 8'de (UTC)
+  workflow_dispatch: # Elle de tetikleyebilirsin
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create .env file
+        run: |
+          echo "ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}" >> .env
+          echo "IG_ACCESS_TOKEN=${{ secrets.IG_ACCESS_TOKEN }}" >> .env
+          echo "IG_PAGE_ID=${{ secrets.IG_PAGE_ID }}" >> .env
+          echo "IG_USER_ID=${{ secrets.IG_USER_ID }}" >> .env
+          echo "PUBLIC_VIDEO_URL=${{ secrets.PUBLIC_VIDEO_URL }}" >> .env
+
+      - name: Run script
+        run: node index.js
