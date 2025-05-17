@@ -58,8 +58,11 @@ async function main() {
     );
     const videoUrl = await uploadVideoToDiscord(videoPath, DISCORD_WEBHOOK_URL);
     const caption =
+      `🛡️ ${championData.name} Lore!\n\n` +
       championData.lore +
-      "\n\nWhich champion's lore should be next? Let us know in the comments!";
+      "\n\n" +
+      "Which champion's lore should we cover next? Let us know in the comments! 💬\n" +
+      "#leagueoflegends #lol #lore #champion #explore #fyp #reels #gaming #riotgames #videomaking #esports #legendary #viral #explorepage #gamers #videocontent #storytime";
     await postVideoToInstagram(videoUrl, caption, ACCESS_TOKEN, PAGE_ID);
     await cleanup(TEMP_DIR);
   } catch (error) {

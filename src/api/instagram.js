@@ -6,9 +6,8 @@ export async function postVideoToInstagram(
   accessToken,
   userId
 ) {
-  // 1. Create media object (container)
   const createRes = await axios.post(
-    `https://graph.facebook.com/v19.0/${userId}/media`,
+    `https://graph.facebook.com/v22.0/${userId}/media`,
     {
       video_url: videoUrl,
       caption: caption,
@@ -18,11 +17,21 @@ export async function postVideoToInstagram(
     }
   );
   const creationId = createRes.data.id;
-  // 2. Wait for Instagram to process the video (30s)
-  await new Promise((res) => setTimeout(res, 30000));
-  // 3. Publish the media object
+  let status = "IN_PROGRESS";
+  let tries = 0;
+  while (status !== "FINISHED" && tries < 20) {
+    await new Promise((res) => setTimeout(res, 5000));
+    const statusRes = await axios.get(
+      `https://graph.facebook.com/v22.0/${creationId}?fields=status_code&access_token=${accessToken}`
+    );
+    status = statusRes.data.status_code;
+    tries++;
+  }
+  if (status !== "FINISHED") {
+    throw new Error("Media is not ready after waiting.");
+  }
   const publishRes = await axios.post(
-    `https://graph.facebook.com/v19.0/${userId}/media_publish`,
+    `https://graph.facebook.com/v22.0/${userId}/media_publish`,
     {
       creation_id: creationId,
       access_token: accessToken,
