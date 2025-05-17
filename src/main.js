@@ -45,12 +45,14 @@ async function main() {
       return imagePath;
     });
     await Promise.all(downloadPromises);
-    if (imagePaths.length === 0) {
+    // Remove nulls (failed downloads)
+    const validImagePaths = imagePaths.filter(Boolean);
+    if (validImagePaths.length === 0) {
       throw new Error("No splash arts were downloaded successfully");
     }
     const videoPath = await createVideo(
       audioPath,
-      imagePaths,
+      validImagePaths,
       audioDuration,
       assPath,
       OUTPUT_DIR
