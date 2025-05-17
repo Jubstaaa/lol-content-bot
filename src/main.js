@@ -60,7 +60,7 @@ async function main() {
     const caption =
       championData.lore +
       "\n\nWhich champion's lore should be next? Let us know in the comments!";
-    // await postVideoToInstagram(videoUrl, caption, ACCESS_TOKEN, PAGE_ID);
+    await postVideoToInstagram(videoUrl, caption, ACCESS_TOKEN, PAGE_ID);
     await cleanup(TEMP_DIR);
   } catch (error) {
     console.log(error);
