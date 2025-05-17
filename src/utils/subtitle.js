@@ -20,7 +20,7 @@ export async function generateASSFromAlignment(alignment, outputPath) {
   ) {
     throw new Error("Invalid alignment data");
   }
-  const style = `Style: Default,Arial,120,&H00FFFF00,&H000000FF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,5,0,2,10,10,300,1`;
+  const style = `Style: Default,Arial,120,&H0000FFFF,&H00000000,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,5,0,2,10,10,300,1`;
   let ass = `[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\n\n[V4+ Styles]\nFormat: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding\n${style}\n\n[Events]\nFormat: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text\n`;
   let word = "";
   let wordStartIdx = null;

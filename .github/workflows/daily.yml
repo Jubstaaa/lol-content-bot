@@ -2,8 +2,8 @@ name: Daily League Lore Video
 
 on:
   schedule:
-    - cron: "0 8 * * *" 
-  workflow_dispatch: 
+    - cron: "0 18 * * *"
+  workflow_dispatch:
 
 jobs:
   build:
