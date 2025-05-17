@@ -11,7 +11,7 @@ import {
   OUTPUT_DIR,
   BASE_URL,
   ACCESS_TOKEN,
-  PAGE_ID,
+  IG_USER_ID,
   ELEVENLABS_API_KEY,
   DISCORD_WEBHOOK_URL,
 } from "./config.js";
@@ -63,7 +63,7 @@ async function main() {
       "\n\n" +
       "Which champion's lore should we cover next? Let us know in the comments! 💬\n" +
       "#leagueoflegends #lol #lore #champion #explore #fyp #reels #gaming #riotgames #videomaking #esports #legendary #viral #explorepage #gamers #videocontent #storytime";
-    await postVideoToInstagram(videoUrl, caption, ACCESS_TOKEN, PAGE_ID);
+    await postVideoToInstagram(videoUrl, caption, ACCESS_TOKEN, IG_USER_ID);
     await cleanup(TEMP_DIR);
   } catch (error) {
     console.log(error);
