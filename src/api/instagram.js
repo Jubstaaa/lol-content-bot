@@ -19,12 +19,14 @@ export async function postVideoToInstagram(
   const creationId = createRes.data.id;
   let status = "IN_PROGRESS";
   let tries = 0;
-  while (status !== "FINISHED" && tries < 20) {
-    await new Promise((res) => setTimeout(res, 5000));
+  const maxTries = 1000;
+  while (status !== "FINISHED" && tries < maxTries) {
+    await new Promise((res) => setTimeout(res, 7000));
     const statusRes = await axios.get(
       `https://graph.facebook.com/v22.0/${creationId}?fields=status_code&access_token=${accessToken}`
     );
     status = statusRes.data.status_code;
+    console.log(status);
     tries++;
   }
   if (status !== "FINISHED") {

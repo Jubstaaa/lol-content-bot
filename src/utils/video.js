@@ -50,7 +50,13 @@ export async function createVideo(
         "-preset",
         "slow",
         "-crf",
-        "23",
+        "18",
+        "-b:v",
+        "6M",
+        "-maxrate",
+        "8M",
+        "-bufsize",
+        "12M",
         "-t",
         audioDuration.toString(),
         "-r",
@@ -58,6 +64,10 @@ export async function createVideo(
         "-pix_fmt",
         "yuv420p",
         "-shortest",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "192k",
       ])
       .output(outputPath)
       .on("end", () => {
