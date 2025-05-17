@@ -1,54 +1,61 @@
-# League of Legends Champion Content Generator
+# League of Legends Daily Lore Video Bot
 
-This Node.js project creates a video featuring a champion's lore narration with their splash arts as a slideshow. It uses ElevenLabs for text-to-speech and ffmpeg for video creation.
+This Node.js project automatically generates and uploads a daily League of Legends champion lore video, complete with audio narration, splash art images, and animated subtitles. The video is posted to Instagram Reels and hosted via Discord CDN, all orchestrated by GitHub Actions.
+
+## Features
+
+- **Random Champion**: Selects a random champion daily from Riot's Data Dragon API.
+- **Latest Data**: Fetches the latest Data Dragon version and champion lore.
+- **Audio Narration**: Uses ElevenLabs API for high-quality TTS narration, with word-level timestamps for subtitle alignment.
+- **Splash Art Slideshow**: Downloads all splash arts for the champion and creates a vertical (1080x1920) video.
+- **Animated Subtitles**: Generates stylized, top-aligned, yellow ASS subtitles with black outline and fade-in/out animation.
+- **Video Optimization**: Outputs a 720x1280, 24fps, size-optimized video for Instagram/Discord.
+- **Automated Upload**: Uploads the video to Discord via webhook (for public CDN hosting) and posts to Instagram Reels via the Graph API.
+- **Fully Automated**: Runs daily via GitHub Actions, with all secrets managed via GitHub Secrets.
 
 ## Prerequisites
 
 - Node.js (v14 or higher)
 - ffmpeg installed on your system
 - ElevenLabs API key
+- Discord webhook URL
+- Instagram Graph API credentials (Access Token, User ID)
 
 ## Installation
 
 1. Clone this repository
 2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the root directory and add your secrets:
+   ```
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key
+   DISCORD_WEBHOOK_URL=your_discord_webhook_url
+   IG_ACCESS_TOKEN=your_instagram_access_token
+   IG_USER_ID=your_instagram_user_id
+   ```
 
-```bash
-npm install
-```
+## Usage (Manual)
 
-3. Create a `.env` file in the root directory and add your ElevenLabs API key:
-
-```
-ELEVENLABS_API_KEY=your_api_key_here
-```
-
-## Usage
-
-1. Make sure ffmpeg is installed on your system
+1. Make sure ffmpeg is installed
 2. Run the script:
+   ```bash
+   npm start
+   ```
+3. The final video will be saved as `output/final_video.mp4` and uploaded to Discord/Instagram automatically.
 
-```bash
-npm start
-```
+## Automation (GitHub Actions)
 
-The script will:
-
-1. Fetch Viego's data from Data Dragon
-2. Generate audio narration of Viego's lore using ElevenLabs
-3. Download all of Viego's splash arts
-4. Create a video with fade transitions between splash arts
-5. Save the final video in the `output` directory
-6. Clean up temporary files
+- The workflow in `.github/workflows/daily.yml` runs the script daily, handles all secrets, and uploads the video.
+- Video is hosted on Discord CDN for public access and posted to Instagram Reels.
 
 ## Output
 
-The final video will be saved as `output/Viego_video.mp4`. The video will feature:
+- Video: `output/final_video.mp4` (vertical, optimized for Reels)
+- Temporary files: stored in `temp/` and auto-cleaned
 
-- Rachel's voice from ElevenLabs narrating Viego's lore
-- All of Viego's splash arts with fade transitions
-- The duration of each splash art is calculated based on the audio length
+## Notes
 
-## Temporary Files
-
-Temporary files (downloaded splash arts and audio) are stored in the `temp` directory and are automatically cleaned up after the video is created.
+- All unused files and legacy code have been removed for clarity and maintainability.
+- For troubleshooting, check GitHub Actions logs and Discord/Instagram API responses.

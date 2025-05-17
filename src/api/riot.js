@@ -19,3 +19,13 @@ export async function fetchChampionData(CHAMPION_NAME) {
   );
   return response.data.data[CHAMPION_NAME];
 }
+
+export async function fetchAllChampions() {
+  if (!DATA_DRAGON_VERSION) {
+    DATA_DRAGON_VERSION = await fetchLatestDataDragonVersion();
+  }
+  const response = await axios.get(
+    `${BASE_URL}/${DATA_DRAGON_VERSION}/data/en_US/champion.json`
+  );
+  return Object.values(response.data.data);
+}

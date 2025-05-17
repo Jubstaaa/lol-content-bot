@@ -1,6 +1,5 @@
 import "dotenv/config";
-import champions from "../champions.json" assert { type: "json" };
-import { fetchChampionData } from "./api/riot.js";
+import { fetchChampionData, fetchAllChampions } from "./api/riot.js";
 import { generateAudio } from "./api/elevenlabs.js";
 import { uploadVideoToDiscord } from "./api/discord.js";
 import { postVideoToInstagram } from "./api/instagram.js";
@@ -20,14 +19,15 @@ import fs from "fs-extra";
 fs.ensureDirSync(TEMP_DIR);
 fs.ensureDirSync(OUTPUT_DIR);
 
-function getRandomChampion() {
+async function getRandomChampionId() {
+  const champions = await fetchAllChampions();
   const idx = Math.floor(Math.random() * champions.length);
   return champions[idx].id;
 }
 
 async function main() {
   try {
-    const CHAMPION_NAME = getRandomChampion();
+    const CHAMPION_NAME = await getRandomChampionId();
     const championData = await fetchChampionData(CHAMPION_NAME);
     const { audioPath, assPath } = await generateAudio(
       championData.lore,
