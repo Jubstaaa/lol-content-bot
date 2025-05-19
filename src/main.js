@@ -14,6 +14,7 @@ import {
   ELEVENLABS_API_KEY,
 } from "./config.js";
 import fs from "fs-extra";
+import dayjs from "dayjs";
 
 fs.ensureDirSync(TEMP_DIR);
 fs.ensureDirSync(OUTPUT_DIR);
