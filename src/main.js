@@ -24,6 +24,24 @@ async function getRandomChampionId() {
   return champions[idx].id;
 }
 
+const FAN_NOTE =
+  "⚠️ *Unofficial fan page.* All visuals © Riot Games. Used under Riot Fan Content Policy.\n" +
+  "🎙️ Made with AI voice. #AIGenerated";
+
+function buildCaption(championData) {
+  const dateTag = dayjs().format("YYYY-MM-DD");         
+  return (
+    `🛡️ ${championData.name} Lore – ${dateTag}\n\n` +
+    championData.lore +
+    "\n\n" +
+    "Which champion's lore should we cover next? Let us know in the comments! 💬\n\n" +
+    FAN_NOTE +
+    "\n\n" +
+    "#leagueoflegends #lore #fanpage #riotgames"
+  );
+}
+
+
 async function main() {
   try {
     const CHAMPION_NAME = await getRandomChampionId();
@@ -58,12 +76,7 @@ async function main() {
       OUTPUT_DIR
     );
     const videoUrl = await uploadToCatbox(videoPath);
-    const caption =
-      `🛡️ ${championData.name} Lore!\n\n` +
-      championData.lore +
-      "\n\n" +
-      "Which champion's lore should we cover next? Let us know in the comments! 💬\n" +
-      "#leagueoflegends #lol #lore #champion #explore #fyp #reels #gaming #riotgames #videomaking #esports #legendary #viral #explorepage #gamers #videocontent #storytime";
+    const caption = buildCaption(championData);
     await postVideoToInstagram(videoUrl, caption, ACCESS_TOKEN, IG_USER_ID);
     await cleanup(TEMP_DIR);
   } catch (error) {
