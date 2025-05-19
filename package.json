@@ -8,6 +8,7 @@
     "start": "node src/main.js"
   },
   "dependencies": {
+    "dayjs":"1.11.3",
     "axios": "^1.6.7",
     "dotenv": "^16.4.5",
     "elevenlabs": "1.59.0",
