@@ -4,7 +4,7 @@ import { generateAudio } from "./api/elevenlabs.js";
 import { postVideoToInstagram } from "./api/instagram.js";
 import { downloadSplashArt, cleanup } from "./utils/file.js";
 import { getAudioDuration, createVideo } from "./utils/video.js";
-import { uploadToCatbox } from "./utils/catbox.js";
+import { uploadToCatbox } from "./utils/fileUpload.js";
 import {
   TEMP_DIR,
   OUTPUT_DIR,
@@ -30,7 +30,7 @@ const FAN_NOTE =
   "🎙️ Made with AI voice. #AIGenerated";
 
 function buildCaption(championData) {
-  const dateTag = dayjs().format("YYYY-MM-DD");         
+  const dateTag = dayjs().format("YYYY-MM-DD");
   return (
     `🛡️ ${championData.name} Lore – ${dateTag}\n\n` +
     championData.lore +
@@ -41,7 +41,6 @@ function buildCaption(championData) {
     "#leagueoflegends #lore #fanpage #riotgames"
   );
 }
-
 
 async function main() {
   try {

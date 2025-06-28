@@ -1,6 +1,6 @@
 # League of Legends Daily Lore Video Bot
 
-This Node.js project automatically generates and uploads a daily League of Legends champion lore video, complete with audio narration, splash art images, and animated subtitles. The video is posted to Instagram Reels and hosted via Catbox.moe, all orchestrated by GitHub Actions.
+This Node.js project automatically generates and uploads a daily League of Legends champion lore video, complete with audio narration, splash art images, and animated subtitles. The video is posted to Instagram Reels and hosted via GoFile.io, all orchestrated by GitHub Actions.
 
 ## Features
 
@@ -9,8 +9,8 @@ This Node.js project automatically generates and uploads a daily League of Legen
 - **Audio Narration**: Uses ElevenLabs API for high-quality TTS narration, with word-level timestamps for subtitle alignment.
 - **Splash Art Slideshow**: Downloads all splash arts for the champion and creates a vertical (1080x1920) video.
 - **Animated Subtitles**: Generates stylized, top-aligned, yellow ASS subtitles with black outline and fade-in/out animation.
-- **Video Optimization**: Outputs a 720x1280, 24fps, size-optimized video for Instagram/Catbox.moe.
-- **Automated Upload**: Uploads the video to Catbox.moe (for public hosting) and posts to Instagram Reels via the Graph API.
+- **Video Optimization**: Outputs a 720x1280, 24fps, size-optimized video for Instagram/GoFile.io.
+- **Automated Upload**: Uploads the video to GoFile.io (for public hosting) and posts to Instagram Reels via the Graph API.
 - **Fully Automated**: Runs daily via GitHub Actions, with all secrets managed via GitHub Secrets.
 
 ## Prerequisites
@@ -18,7 +18,8 @@ This Node.js project automatically generates and uploads a daily League of Legen
 - Node.js (v14 or higher)
 - ffmpeg installed on your system
 - ElevenLabs API key
-- Instagram Graph API credentials (Long-Lived Access Token, User ID)
+- Instagram Graph API credentials (Long-Lived Access Token, User ID, App ID, App Secret)
+- GoFile.io API key (free account required)
 
 ## Installation
 
@@ -32,7 +33,17 @@ This Node.js project automatically generates and uploads a daily League of Legen
    ELEVENLABS_API_KEY=your_elevenlabs_api_key
    IG_ACCESS_TOKEN=your_long_lived_instagram_access_token
    IG_USER_ID=your_instagram_user_id
+   IG_APP_ID=your_facebook_app_id
+   IG_APP_SECRET=your_facebook_app_secret
+   GOFILE_API_KEY=your_gofile_api_key
    ```
+
+## GoFile.io API Key Setup
+
+1. Go to [GoFile.io](https://gofile.io) and create a free account
+2. Navigate to your profile page: [GoFile.io Profile](https://gofile.io/myProfile)
+3. Copy your API key from the "API Key" section
+4. Add it to your `.env` file as `GOFILE_API_KEY=your_api_key_here`
 
 ## Usage (Manual)
 
@@ -41,12 +52,12 @@ This Node.js project automatically generates and uploads a daily League of Legen
    ```bash
    npm start
    ```
-3. The final video will be saved as `output/final_video.mp4` and uploaded to Catbox.moe/Instagram automatically.
+3. The final video will be saved as `output/final_video.mp4` and uploaded to GoFile.io/Instagram automatically.
 
 ## Automation (GitHub Actions)
 
 - The workflow in `.github/workflows/daily.yml` runs the script daily, handles all secrets, and uploads the video.
-- Video is hosted on Catbox.moe for public access and posted to Instagram Reels.
+- Video is hosted on GoFile.io for public access and posted to Instagram Reels.
 
 ## Output
 
@@ -63,14 +74,14 @@ This Node.js project automatically generates and uploads a daily League of Legen
 
 ### 2. Exchange for a Long-Lived Token
 
-Use the following cURL command (replace values with your own):
+Use the following cURL command (replace values with your own, or use the values from your `.env` file):
 
 ```bash
-curl -X GET "https://graph.facebook.com/v19.0/oauth/access_token?grant_type=fb_exchange_token&client_id=YOUR_APP_ID&client_secret=YOUR_APP_SECRET&fb_exchange_token=YOUR_SHORT_LIVED_TOKEN"
+curl -X GET "https://graph.facebook.com/v19.0/oauth/access_token?grant_type=fb_exchange_token&client_id=$IG_APP_ID&client_secret=$IG_APP_SECRET&fb_exchange_token=YOUR_SHORT_LIVED_TOKEN"
 ```
 
-- `YOUR_APP_ID`: Your Facebook App ID
-- `YOUR_APP_SECRET`: Your Facebook App Secret
+- `IG_APP_ID`: Your Facebook App ID (from `.env`)
+- `IG_APP_SECRET`: Your Facebook App Secret (from `.env`)
 - `YOUR_SHORT_LIVED_TOKEN`: The token you copied from the Explorer
 
 The response will include a new `access_token` valid for about 60 days. Use this as `IG_ACCESS_TOKEN` in your `.env` and GitHub Secrets.
@@ -91,4 +102,5 @@ curl -X GET "https://graph.instagram.com/refresh_access_token?grant_type=ig_refr
 ## Notes
 
 - All unused files and legacy code have been removed for clarity and maintainability.
-- For troubleshooting, check GitHub Actions logs and Instagram/Catbox.moe API responses.
+- For troubleshooting, check GitHub Actions logs and Instagram/GoFile.io API responses.
+- GoFile.io provides reliable file hosting with API access for automated uploads.
