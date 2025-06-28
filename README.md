@@ -1,6 +1,6 @@
 # League of Legends Daily Lore Video Bot
 
-This Node.js project automatically generates and uploads a daily League of Legends champion lore video, complete with audio narration, splash art images, and animated subtitles. The video is posted to Instagram Reels and hosted via GoFile.io, all orchestrated by GitHub Actions.
+This Node.js project automatically generates and uploads a daily League of Legends champion lore video, complete with audio narration, splash art images, and animated subtitles. The video is posted to Instagram Reels and hosted via Cloudinary, all orchestrated by GitHub Actions.
 
 ## Features
 
@@ -9,8 +9,8 @@ This Node.js project automatically generates and uploads a daily League of Legen
 - **Audio Narration**: Uses ElevenLabs API for high-quality TTS narration, with word-level timestamps for subtitle alignment.
 - **Splash Art Slideshow**: Downloads all splash arts for the champion and creates a vertical (1080x1920) video.
 - **Animated Subtitles**: Generates stylized, top-aligned, yellow ASS subtitles with black outline and fade-in/out animation.
-- **Video Optimization**: Outputs a 720x1280, 24fps, size-optimized video for Instagram/GoFile.io.
-- **Automated Upload**: Uploads the video to GoFile.io (for public hosting) and posts to Instagram Reels via the Graph API.
+- **Video Optimization**: Outputs a 720x1280, 24fps, size-optimized video for Instagram/Cloudinary.
+- **Automated Upload**: Uploads the video to Cloudinary (for public hosting) and posts to Instagram Reels via the Graph API.
 - **Fully Automated**: Runs daily via GitHub Actions, with all secrets managed via GitHub Secrets.
 
 ## Prerequisites
@@ -19,7 +19,7 @@ This Node.js project automatically generates and uploads a daily League of Legen
 - ffmpeg installed on your system
 - ElevenLabs API key
 - Instagram Graph API credentials (Long-Lived Access Token, User ID, App ID, App Secret)
-- GoFile.io API key (free account required)
+- Cloudinary account (free tier available)
 
 ## Installation
 
@@ -35,15 +35,31 @@ This Node.js project automatically generates and uploads a daily League of Legen
    IG_USER_ID=your_instagram_user_id
    IG_APP_ID=your_facebook_app_id
    IG_APP_SECRET=your_facebook_app_secret
-   GOFILE_API_KEY=your_gofile_api_key
+   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
    ```
 
-## GoFile.io API Key Setup
+## Cloudinary Setup
 
-1. Go to [GoFile.io](https://gofile.io) and create a free account
-2. Navigate to your profile page: [GoFile.io Profile](https://gofile.io/myProfile)
-3. Copy your API key from the "API Key" section
-4. Add it to your `.env` file as `GOFILE_API_KEY=your_api_key_here`
+1. Go to [Cloudinary](https://cloudinary.com) and create a free account
+2. After signing up, go to your Dashboard
+3. Copy your credentials from the Dashboard:
+   - **Cloud Name**: Found in the Dashboard URL or Account Details
+   - **API Key**: Listed in the Dashboard
+   - **API Secret**: Listed in the Dashboard (click "Show" to reveal)
+4. Add these to your `.env` file:
+   ```
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
+   ```
+
+**Note**: Cloudinary free tier includes:
+
+- 25GB storage
+- 25GB bandwidth per month
+- Perfect for video hosting and Instagram integration
 
 ## Usage (Manual)
 
@@ -52,12 +68,12 @@ This Node.js project automatically generates and uploads a daily League of Legen
    ```bash
    npm start
    ```
-3. The final video will be saved as `output/final_video.mp4` and uploaded to GoFile.io/Instagram automatically.
+3. The final video will be saved as `output/final_video.mp4` and uploaded to Cloudinary/Instagram automatically.
 
 ## Automation (GitHub Actions)
 
 - The workflow in `.github/workflows/daily.yml` runs the script daily, handles all secrets, and uploads the video.
-- Video is hosted on GoFile.io for public access and posted to Instagram Reels.
+- Video is hosted on Cloudinary for public access and posted to Instagram Reels.
 
 ## Output
 
@@ -102,5 +118,5 @@ curl -X GET "https://graph.instagram.com/refresh_access_token?grant_type=ig_refr
 ## Notes
 
 - All unused files and legacy code have been removed for clarity and maintainability.
-- For troubleshooting, check GitHub Actions logs and Instagram/GoFile.io API responses.
-- GoFile.io provides reliable file hosting with API access for automated uploads.
+- For troubleshooting, check GitHub Actions logs and Instagram/Cloudinary API responses.
+- Cloudinary provides reliable video hosting with direct file URLs compatible with Instagram Graph API.

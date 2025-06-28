@@ -31,7 +31,9 @@ jobs:
           echo "IG_PAGE_ID=${{ secrets.IG_PAGE_ID }}" >> .env
           echo "IG_USER_ID=${{ secrets.IG_USER_ID }}" >> .env
           echo "PUBLIC_VIDEO_URL=${{ secrets.PUBLIC_VIDEO_URL }}" >> .env
-          echo "GOFILE_API_KEY=${{ secrets.GOFILE_API_KEY }}" >> .env
+          echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
+          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
+          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
 
       - name: Run script
         run: npm run start

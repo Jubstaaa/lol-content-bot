@@ -8,8 +8,9 @@
     "start": "node src/main.js"
   },
   "dependencies": {
-    "dayjs":"1.11.3",
     "axios": "^1.6.7",
+    "cloudinary": "^2.7.0",
+    "dayjs": "1.11.3",
     "dotenv": "^16.4.5",
     "elevenlabs": "1.59.0",
     "fluent-ffmpeg": "^2.1.2",

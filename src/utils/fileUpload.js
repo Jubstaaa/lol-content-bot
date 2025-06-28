@@ -1,42 +1,46 @@
-import axios from "axios";
+import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import FormData from "form-data";
 
-const GOFILE_API_KEY = process.env.GOFILE_API_KEY;
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 
-export async function uploadToGoFile(filePath) {
-  if (!GOFILE_API_KEY) {
-    throw new Error("GOFILE_API_KEY is not set in environment variables");
+export async function uploadToCloudinary(filePath) {
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+    throw new Error(
+      "Cloudinary credentials are not set in environment variables"
+    );
   }
 
-  const form = new FormData();
-  form.append("file", fs.createReadStream(filePath));
-  form.append("token", GOFILE_API_KEY);
+  // Configure Cloudinary
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+  });
 
-  const uploadRes = await axios.post(
-    "https://upload.gofile.io/uploadfile",
-    form,
-    {
-      headers: form.getHeaders(),
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+  try {
+    // Upload the video file
+    const uploadResult = await cloudinary.uploader.upload(filePath, {
+      resource_type: "video",
+      folder: "lol-content-bot",
+      public_id: `video_${Date.now()}`,
+      overwrite: true,
+      invalidate: true,
+    });
+
+    if (uploadResult && uploadResult.secure_url) {
+      return uploadResult.secure_url;
+    } else {
+      throw new Error("Upload failed: No secure URL received");
     }
-  );
-
-  if (
-    uploadRes.data.status === "ok" &&
-    uploadRes.data.data &&
-    uploadRes.data.data.downloadPage
-  ) {
-    return uploadRes.data.data.downloadPage;
-  } else {
-    throw new Error(
-      "GoFile upload failed: " +
-        (uploadRes.data.status || JSON.stringify(uploadRes.data))
-    );
+  } catch (error) {
+    console.error("Cloudinary upload error:", error.message);
+    throw new Error(`Cloudinary upload failed: ${error.message}`);
   }
 }
 
+// Keep the old function name for backward compatibility
 export async function uploadToCatbox(filePath) {
-  return uploadToGoFile(filePath);
+  return uploadToCloudinary(filePath);
 }
